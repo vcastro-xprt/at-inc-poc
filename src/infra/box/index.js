@@ -11,40 +11,16 @@ const sdk = new BoxSDK({
   },
 });
 
-const adminAPIClient = sdk.getAppAuthClient("enterprise", "1043894477");
+const enterpriseClient = sdk.getAppAuthClient("enterprise", "1043894477");
 
 /**
  * Admin user: 26026687277
  * Normal user: 26033366785
  */
 
-const client = sdk.getAppAuthClient("user", "26033366785");
+const adminClient = sdk.getAppAuthClient("user", "26026687277");
 
-exports.handler = async (event, context) => {
-  let rootFolderId = "0";
-
-  await listFoldersAndFiles(rootFolderId);
-
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ message: "Hello World" }),
-  };
+module.exports = {
+  enterpriseClient,
+  adminClient,
 };
-
-async function listFoldersAndFiles(folderId, prefix = "") {
-  try {
-    const items = await client.folders.getItems(folderId);
-
-    items.entries.forEach((item) => {
-      if (item.type === "folder") {
-        console.log(`${prefix}Folder: ${item.name}`);
-
-        listFoldersAndFiles(item.id, `${prefix}  `); // Recursively call the function for subfolders
-      } else if (item.type === "file") {
-        console.log(`${prefix}File: ${item.name}`);
-      }
-    });
-  } catch (err) {
-    console.error(err);
-  }
-}
