@@ -39,10 +39,31 @@ Follow the steps below to set up and run the project locally:
     ```
     This will start a local server at http://localhost:8888.
 
-5. Test the function by sending a GET request to:
+5. Execute this command to create test token:
+   ```shel
+   curl --request POST \
+   --url https://dev-cv8aw3p0ut5ee3ll.us.auth0.com/oauth/token \
+   --header 'content-type: application/json' \
+   --data '{"client_id":"ampEXlxrblBAyWikD6MGXamBNOcgtu8I","client_secret":"ru54WXeRfQ1lCrlf8b2uAy22NlimwW4AANAyUb4zNf7vCBU2L0RM_2LyXcbIvF7L","audience":"https://admirable-cupcake-248354.netlify.app","grant_type":"client_credentials"}'
+   ```
+
+6. Test the function by sending a GET request with the token to:
+
+   List forlders and files
+   ```shell
+   curl --request GET \
+   --url http://localhost:8888/.netlify/functions/listFoldersAndFiles \
+   --header 'Authorization: Bearer <token>' \
+   --cookie connect.sid=s%253AAh-7Zdu4uPy8aER03kQs0ayyrXv_bh8_.p4FJkcW7u7sS98OmywkRLb3Dy98Bb5EdS3chRd1q83s
+   ```
    
-   http://localhost:8888/.netlify/functions/listFoldersAndFiles
-   http://localhost:8888/.netlify/functions/downloadFile?fileId=0
+   Download file
+   ```shell
+   curl --request GET \ 
+   --url http://localhost:8888/.netlify/functions/downloadFile?fileId=<fileId> \
+   --header 'Authorization: Bearer <token>' \
+   --cookie connect.sid=s%253AAh-7Zdu4uPy8aER03kQs0ayyrXv_bh8_.p4FJkcW7u7sS98OmywkRLb3Dy98Bb5EdS3chRd1q83s
+   ```
 
 
 

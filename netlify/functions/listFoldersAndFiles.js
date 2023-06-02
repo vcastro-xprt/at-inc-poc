@@ -1,14 +1,27 @@
+const { wrap } = require("@netlify/integrations");
+const { withAuth0 } = require("@netlify/auth0");
+
 const {
   listFoldersAndFiles,
 } = require("../../src/services/box/listFoldersAndFiles");
 
-exports.handler = async (event, context) => {
-  const rootFolderId = "0";
+const withIntegrations = wrap(withAuth0);
 
-  const data = await listFoldersAndFiles(rootFolderId);
+exports.handler = withIntegrations(
+  async (event, context) => {
+    const rootFolderId = "0";
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify(data),
-  };
-};
+    const data = await listFoldersAndFiles(rootFolderId);
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify(data),
+    };
+  },
+  {
+    auth0: {
+      required: true,
+      // roles: ["admin"],
+    },
+  }
+);

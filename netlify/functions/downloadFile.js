@@ -1,12 +1,25 @@
+const { wrap } = require("@netlify/integrations");
+const { withAuth0 } = require("@netlify/auth0");
+
 const { downloadFile } = require("../../src/services/box/downloadFile");
 
-exports.handler = async (event, context) => {
-  const fileId = event.queryStringParameters.fileId;
+const withIntegrations = wrap(withAuth0);
 
-  const data = await downloadFile(fileId);
+exports.handler = withIntegrations(
+  async (event, context) => {
+    const fileId = event.queryStringParameters.fileId;
 
-  return {
-    statusCode: 200,
-    body: data,
-  };
-};
+    const data = await downloadFile(fileId);
+
+    return {
+      statusCode: 200,
+      body: data,
+    };
+  },
+  {
+    auth0: {
+      required: true,
+      // roles: ["admin"],
+    },
+  }
+);

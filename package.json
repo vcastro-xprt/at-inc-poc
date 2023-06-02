@@ -9,6 +9,8 @@
   "author": "Vagner B.C",
   "license": "ISC",
   "dependencies": {
+    "@netlify/auth0": "^0.1.2",
+    "@netlify/integrations": "^0.6.0",
     "box-node-sdk": "^3.0.0"
   },
   "devDependencies": {
